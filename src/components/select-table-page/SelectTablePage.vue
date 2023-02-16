@@ -1,9 +1,11 @@
 <template>
   <div class="about">
-    <h1>This is an select page</h1>
+    <h1>This is an select table page</h1>
+    <br>
     <c-box >
-        <c-select v-model="table_number" placeholder="Select table" size="md" mt="13%" borderColor="gray.800">
-                <option v-for="index in table" :value="1"> {{ index }}</option>
+        <p>please select your table</p>
+        <c-select v-model="table_number" placeholder="Select table" size="md" borderColor="gray.800">
+                <option v-for="index in table" :value="index" > {{ index }}</option>
         </c-select>
     </c-box>
   </div>
