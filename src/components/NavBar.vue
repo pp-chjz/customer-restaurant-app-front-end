@@ -3,7 +3,9 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/selectTable">Select Table</router-link>
+      <router-link to="/selectTable">Select Table</router-link> |
+      <router-link to="/allMenuPage">All Menu</router-link> |
+
 
     </nav>
   </div>
