@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SelectTablePage from '../components/select-table-page/SelectTablePage.vue'
+import AllMenuPage from '../components/all-menu-page/AllMenuPage.vue'
+
 
 Vue.use(VueRouter)
 
@@ -23,6 +25,11 @@ const routes = [
     path: '/selectTable',
     name: 'selectTable',
     component: SelectTablePage
+  },
+  {
+    path: '/allMenuPage',
+    name: 'allMenuPage',
+    component: AllMenuPage
   },
 ]
 
