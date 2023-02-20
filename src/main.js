@@ -8,8 +8,13 @@ import Chakra, {
   CBox,
   CReset
 } from '@chakra-ui/vue'
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css'
 
 Vue.use(Chakra)
+Vue.use(Vuesax, {
+  // options here
+})
 
 Vue.config.productionTip = false
 
