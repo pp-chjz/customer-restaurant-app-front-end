@@ -1,49 +1,124 @@
 <template>
   <div class="about">
-    <h1>This is an all menu page</h1>
-    <vs-button @click="popupActivo=true" color="primary" type="border">Open Default popup</vs-button>
-    <vs-popup class="holamundo"  title="Lorem ipsum dolor sit amet" :active.sync="popupActivo">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <c-stack should-wrap-children is-inline ml="3%" mt="5%">
+        <c-grid template-columns="repeat(2, fr)">
+            <c-text  fontSize="xl" > Welcome </c-text>
+            <c-heading color="#B30F0F"> {{ "Saengchai Phochana" }}</c-heading>
+        </c-grid>
+        <c-box  
+            class="circle" 
+            height="70px"
+            width="70px"
+            roundedTopLeft="100px"
+            roundedTopRight="100px"
+            borderBottomRightRadius="100px"
+            borderBottomLeftRadius="100px"
+            bg="#FFC529"
+        > 
+            <c-text class="text_table" ml="13%" py="23px" fontSize="sm"> โต๊ะที่ 2</c-text>
+        </c-box>
+    </c-stack>
+    
+    <!-- Search Foods (Version 1 use c-textarea) -->
+    <!-- <c-box
+        ml="3%"
+        mt="7%"
+        width="360px"
+        height="45px"
+        borderWidth="0.1rem"
+        borderRadius="42rem"
+        bg="#2F383A"
+        color="#A7A7A7"
+    > 
+    <c-stack should-wrap-children is-inline ml="3%" mt="2%">
+        <c-flex w="30px" >
+            <img  src="@/assets/icon_search.png"/>
+        </c-flex>
+        <c-flex w="100px" >
+            <c-textarea ml="3%" py="4px" fontSize="sm">Search Foods</c-textarea>
+        </c-flex>
+        
+    </c-stack>
+    </c-box> -->
 
-      </p>
-    </vs-popup>
-    <!-- <div v-for="item in menus">
-        {{ item }}
-    </div> -->  
+    <!-- Search Foods (Version 2 use c-input) -->
+    <c-form-control>
+        <c-stack should-wrap-children is-inline ml="3%" mt="2%">
+            <c-input 
+                mr="33%"
+                mt="7%"
+                width="360px"
+                height="45px"
+                borderWidth="0.1rem"
+                borderRadius="42rem"
+                bg="#2F383A"
+                color="#A7A7A7" 
+                placeholder="Search Foods"  />
+        </c-stack>
+    </c-form-control>
+
+    <!-- Categories -->
+    <c-text fontSize="2xl" mt="8%" ml="3%"> Categories </c-text>
+    <c-stack should-wrap-children is-inline ml="3%" mt="3%">
+        <c-button 
+            width="100px"
+            height="33px"
+            borderWidth="0.1rem"
+            borderRadius="42rem"
+            bg="#F58BF8"
+        > Popular </c-button>
+
+        <c-button 
+            width="100px"
+            height="33px"
+            borderWidth="0.1rem"
+            borderRadius="42rem"
+            color="#A7A7A7"
+            bg="#2F383A"
+        > All Foods </c-button>
+
+        <c-button 
+            width="100px"
+            height="33px"
+            borderWidth="0.1rem"
+            borderRadius="42rem"
+            color="#A7A7A7"
+            bg="#2F383A"
+        > Seafood </c-button>
+    </c-stack>
+    
+    <!-- Show All Menus -->
     <div v-for="item in menus.data">
-        <!-- ใส่ border ไว้จะได้ดูง่าย -->
-        <c-flex border="2px" borderRadius="md" borderColor="black.200" align="center">
-
-            <c-flex bg="red.50" size="150px" align="center" justify="center">
+        <c-flex mt="4%" ml="3%" borderBottom="2px" borderRadius="md" borderColor="black.200" align="center">
+            <c-flex bg="blue.50" w="200px" size="150px" align="center" justify="center">
                 <c-image src="gibberish.png" size="120px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
             </c-flex>
-
-
-            <c-flex bg="blue.50" size="150px" align="center" justify="center">
+            <c-flex bg="pink.100" w="200px" size="150px" align="center" justify="center">
                 <c-grid
-                size="150px"    
-                template-rows="repeat(3, 1fr)"
-                gap="1"
+                    size="150px"    
+                    template-rows="repeat(3, 1fr)"
+                    gap="1"
                 >
-                    <c-text text-align="center" bg="orange.50">
+                    <c-text text-align="left">
                     {{ item.name_TH }}
                     </c-text>
-                    <c-text text-align="center" bg="orange.50">
+                    <c-text fontWeight="bold" text-align="left">
                     {{ item.name_ENG }}
                     </c-text>
-                    <c-badge v-if="item.menu_status === 'in stock'" mx="2" variant-color="green">In Stock</c-badge>
+
+                    <c-badge v-if="item.menu_status === 'in stock'" mx="2" mt="5%"  variant-color="green">In Stock</c-badge>
                     <c-badge v-if="item.menu_status === 'out of stock'"  mx="2" variant-color="red">Our Of Stock</c-badge>
+
                 </c-grid>
             </c-flex>
-
-            <c-flex bg="yellow.50" size="150px" align="center" justify="center">
+            
+            <c-flex bg="indigo.100" size="150px" align="center" justify="center">
                 <c-grid
                 size="150px"
                 gap="1"
                 >
-                    <c-text bg="tomato" color="white">
-                        ราคา {{ item.price }} THB
+                    <c-text fontWeight="bold" color="black">
+                        {{ item.price }} THB
                     </c-text>
                     <!-- <a @click='edit(index.id)' v-bind="index" align="center"> 
                         <c-icon name="add"/>
@@ -101,9 +176,10 @@ import { CInput,CSelect,CNumberInput,
   CNumberInputField,
   CNumberInputStepper,
   CNumberIncrementStepper,
-  CNumberDecrementStepper,
+  CNumberDecrementStepper, CStack,
   CButton, CImage, CSimpleGrid, CBox,
-  CBadge, CFlex, CText, CHeading, CIcon,  CGrid, CGridItem ,
+  CBadge, CFlex, CText, CHeading, CIcon,  CGrid, CGridItem,
+  CTextarea, CIconButton
   } from "@chakra-ui/vue";
 
 export default {
@@ -118,10 +194,10 @@ export default {
         CNumberInputField,
         CNumberInputStepper,
         CNumberIncrementStepper,
-        CNumberDecrementStepper,
+        CNumberDecrementStepper, CIconButton,
         CButton, CText, CHeading, CIcon,
         CImage, CSimpleGrid ,CBox ,CBadge ,CFlex ,
-        CGrid, CGridItem 
+        CGrid, CGridItem, CStack, CTextarea
 
     },
     data(){
@@ -170,9 +246,13 @@ export default {
 
 <style>
 .box {
-        border: dashed 3px #EA7C69;
-    }
-.name{
-    font-size: 25px;
+    border: dashed 3px #EA7C69;
+}
+
+.circle {
+    border-radius: 100%;
+}
+
+.text_table {
 }
 </style>

@@ -1,13 +1,23 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/selectTable">Select Table</router-link> |
-      <router-link to="/allMenuPage">All Menu</router-link> |
+    <c-flex
+        borderTopLeftRadius="1.5rem"
+        borderTopRightRadius="1.5rem"
+        class="navbar"
+        wrap="wrap"
+        justify="center"
+      >
+      <nav>
+        <li><a href="#/">Home</a></li>
 
+        <li><a href="#/about">About</a></li>
 
-    </nav>
+        <li><a href="#/selectTable">Select Table</a></li>
+
+        <li><a href="#/allMenuPage">All Menu</a></li>
+      </nav>
+    </c-flex>
+    
   </div>
 </template>
 
@@ -16,11 +26,8 @@ import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid } from '@chakra-ui/vue';
 export default {
   name: "app",
   components: { 
-    CText, 
-    CMenu,
-    CMenuButton,
-    CSimpleGrid,
-    CFlex
+    CText, CMenu, CMenuButton,
+    CSimpleGrid, CFlex
   }
 };
 </script>
@@ -35,16 +42,42 @@ export default {
 }
 
 nav {
-  padding: 30px;
-
+  margin: 18px;
+  list-style-type: none;
   a {
-    font-weight: bold;
-    color: #2c3e50;
+    font-weight: 10;
+    color: #ffffff;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+    // &.router-link-exact-active {
+    //   color: #42b983;
+    // }
   }
 }
+
+.navbar {
+  position: fixed;
+  top: 780px;
+  width: 390px;
+  height: 80px;
+  background-color: #690505;
+}
+
+nav li {
+  float: left;
+  margin: 0 0 0 15px;
+}
+
+nav li a {
+  text-decoration: none;
+  transition: all .3s;
+  border-bottom: 3px solid transparent;
+}
+
+nav li a:hover{
+  color: #FFC529;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #FFC529;
+}
+
 </style>
 

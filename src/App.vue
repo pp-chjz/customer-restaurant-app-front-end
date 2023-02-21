@@ -15,8 +15,7 @@ import NavBar from '@/components/NavBar.vue'
 export default {
   name: "App",
   components: {
-    CThemeProvider,
-    CReset,
+    CThemeProvider, CReset,
     HelloWorld,
     NavBar,
   }
