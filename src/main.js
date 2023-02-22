@@ -10,11 +10,14 @@ import Chakra, {
 } from '@chakra-ui/vue'
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
+import VueSwal from 'vue-swal'
 
 Vue.use(Chakra)
 Vue.use(Vuesax, {
   // options here
 })
+Vue.use(VueSwal)
+
 
 Vue.config.productionTip = false
 
