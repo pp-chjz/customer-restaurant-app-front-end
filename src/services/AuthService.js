@@ -88,6 +88,7 @@ export default {
       
       this.jwt = res.data.access_token;
       backendInstance.defaults.headers.common.Authorization = `Bearer ${this.jwt}`;
+      console.log("res")
 
       return {
         success: true,

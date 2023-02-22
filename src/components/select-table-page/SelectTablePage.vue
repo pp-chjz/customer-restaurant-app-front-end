@@ -15,7 +15,7 @@
         <img class="image" src="@/assets/saeng.png"/>
       </c-flex>
       <c-flex justify="center">
-        <c-button @click="summit" borderRadius="1.5rem" mt="50%" width="295px" color="black" variant-color="yellow" variant="solid" size="lg">
+        <c-button @click="summit" borderRadius="1.5rem" mt="10%" width="295px" color="black" variant-color="yellow" variant="solid" size="lg">
             Confirm Table
         </c-button>
       </c-flex>
@@ -45,8 +45,8 @@ export default {
           table_number:"",
           table:['1','2','3','4'],
           form:{
-              email: 'baitoey@hotmail.com',
-              password: 'bt',
+              email: 'user4@hotmail.com',
+              password: 'user',
           }
       }
   },
@@ -55,8 +55,19 @@ export default {
   },
   methods:{
     async summit(){
+      console.log("summit");
+
       let res = await AuthUser.dispatch('login',this.form)
       console.log(res)
+      // this.$swal("test",res,"error");
+      if (res.success) {
+          this.$swal("สำเร็จ" , res.user.name , "success");
+          this.$router.push("/allMenuPage");
+        }
+      else{
+        this.$swal("error" , res.message , "error");
+
+      }
 
 
     }

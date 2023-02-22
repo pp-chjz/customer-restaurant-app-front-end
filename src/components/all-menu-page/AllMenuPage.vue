@@ -86,7 +86,6 @@
             bg="#2F383A"
         > Seafood </c-button>
     </c-stack>
-    
     <!-- Show All Menus -->
     <div v-for="item in menus.data">
         <c-flex mt="4%" ml="3%" borderBottom="2px" borderRadius="md" borderColor="black.200" align="center">
