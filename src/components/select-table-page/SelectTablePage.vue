@@ -59,6 +59,9 @@ export default {
 
       let res = await AuthUser.dispatch('login',this.form)
       console.log(res)
+      localStorage.setItem("table_number", this.table_number);
+
+
       // this.$swal("test",res,"error");
       if (res.success) {
           this.$swal("สำเร็จ" , res.user.name , "success");

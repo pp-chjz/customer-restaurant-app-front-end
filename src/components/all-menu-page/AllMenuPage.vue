@@ -86,8 +86,13 @@
             bg="#2F383A"
         > Seafood </c-button>
     </c-stack>
+
+    <c-button @click="order()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+        สั่งอาหาร
+    </c-button> 
+
     <!-- Show All Menus -->
-    <div v-for="item in menus.data">
+    <div v-for="item in menus.data" :key="item.id">
         <c-flex mt="4%" ml="3%" borderBottom="2px" borderRadius="md" borderColor="black.200" align="center">
             <c-flex bg="blue.50" w="200px" size="150px" align="center" justify="center">
                 <c-image src="gibberish.png" size="120px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
@@ -119,23 +124,31 @@
                     <c-text fontWeight="bold" color="black">
                         {{ item.price }} THB
                     </c-text>
+                    <select-menu-popup
+                    v-bind:name_TH="item.name_TH"
+                    v-bind:name_ENG="item.name_ENG"
+                    v-bind:id="item.id"
+                    v-bind:price="item.price"
+                    v-bind:form="form.menus"
+                    @saveInfo="addMenu"></select-menu-popup>
+
                     <!-- <a @click='edit(index.id)' v-bind="index" align="center"> 
                         <c-icon name="add"/>
                     </a> -->
-                    <vs-button @click="popupActivo2=true" color="primary" type="filled">เลือก</vs-button>
+                    <!-- <vs-button @click="popupActivo2=true" color="primary" type="filled">เลือก</vs-button> -->
 
 
                     <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
-                    <vs-popup  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
+                    <!-- <vs-popup  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
                         <c-image src="gibberish.png" size="300px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
                         <p class="name">{{ item.name_TH }} ({{ item.name_ENG }})</p>
                         <br>
                         <p class="name">หมายเหตุถึงร้านอาหาร (ไม่จำเป็นต้องระบุ)</p>
 
-                        <vs-input class="inputx" size="large" placeholder="ระบุรายละเอียดคำขอ" v-model="value1"/>
+                        <vs-input class="inputx" size="large" placeholder="ระบุรายละเอียดคำขอ" v-model="value1"/> -->
 
                         <!-- เพิ่มลดจำนวนจาน -->
-                        <c-flex align="center">
+                        <!-- <c-flex align="center">
                             <c-flex bg="green.50" align="flex-end">
                                 <c-button @click="deCount" variant-color="red">-</c-button>
                             </c-flex>
@@ -147,14 +160,14 @@
                             <c-box>
                                 <c-button  @click="addCount" variant-color="green">+</c-button>
                             </c-box>
-                        </c-flex>
+                        </c-flex> -->
                         <!-- เพิ่มลดจำนวนจาน -->
 
 
-                        <c-button @click="summit" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+                        <!-- <c-button @click="summit(item.name_TH)" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
                             เพิ่มเมนูนี้
                         </c-button> 
-                    </vs-popup>
+                    </vs-popup> -->
                     <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
 
 
@@ -171,6 +184,8 @@
 <script>
 import AuthUser from '@/store/AuthUser.js'
 import MenuApi from "@/store/MenuApi.js"
+import OrderApi from "@/store/OrderApi.js"
+import SelectMenuPopup from "@/components/select-menu-popup/SelectMenuPopup.vue"
 import { CInput,CSelect,CNumberInput,
   CNumberInputField,
   CNumberInputStepper,
@@ -178,7 +193,7 @@ import { CInput,CSelect,CNumberInput,
   CNumberDecrementStepper, CStack,
   CButton, CImage, CSimpleGrid, CBox,
   CBadge, CFlex, CText, CHeading, CIcon,  CGrid, CGridItem,
-  CTextarea, CIconButton
+  CTextarea, CIconButton ,CFormControl ,
   } from "@chakra-ui/vue";
 
 export default {
@@ -196,24 +211,46 @@ export default {
         CNumberDecrementStepper, CIconButton,
         CButton, CText, CHeading, CIcon,
         CImage, CSimpleGrid ,CBox ,CBadge ,CFlex ,
-        CGrid, CGridItem, CStack, CTextarea
+        CGrid, CGridItem, CStack, CTextarea , CFormControl ,
+        SelectMenuPopup
 
     },
     data(){
         return{
             menus:[],
             menu:[{menu_id:'not show'}],
+            menu_test:[],
             popupActivo:false,
             value1:'',
             value2:'',
             popupActivo2:false,
             popupActivo3:false,
             count:0,
+            form:{
+                "cancel_status":1,
+                "order_status":1,
+                "total_price": 0,
+                "order_time":"1985-08-05 13:25:30",
+                "table_number":0,
+                "menus":[]
+            },
+            menu_payload:{
+                "menu_id":0,
+                "comment":"",
+                "status":0,
+                "QTY":0,
+                "food_status":0,
+                "total_price":0,
+                "order_time":"1985-08-05 13:25:30",
+                "complete_at":"1985-08-05 13:25:30"
+            }
         }
     },
     async created(){
         console.log("All Menu Page Created");
         await this.fetchMenu()
+        this.form.table_number = JSON.parse(localStorage.getItem("table_number"));
+
     },
     methods:{
         async fetchMenu(){
@@ -226,12 +263,33 @@ export default {
             }
             this.menu[0].menu_id = 'true';
         },
+        async order(){
+            console.log("payload = ", this.form)
+            await OrderApi.dispatch("createOrder" , this.form)
+
+
+        },
+        async addMenu({ menu_id,comment,QTY,status,food_status,order_time,complete_at,total_price }){
+            // this.table_number = JSON.parse(localStorage.getItem("table_number"));
+            // this.menu_payload.menu_id = menu_id
+            // this.menu_payload.comment = comment
+            // this.menu_payload.QTY = QTY
+            // this.menu_payload.status = status
+            // this.menu_payload.food_status = food_status
+            // this.menu_payload.order_time = order_time
+            // this.menu_payload.complete_at = complete_at
+            // this.menu_payload.total_price = total_price
+            // console.log("this.menu_payload = ", this.menu_payload)
+            console.log("this.form.menus = ", this.form.menus)
+            // console.log("this.table_number = ", this.table_number)
+
+        },
         edit(id){
             console.log("index.id = ", id)
             console.log("menu = ", this.menu)
         },
-        summit(){
-            console.log("summit")
+        summit(id){
+            console.log("id =" ,id)
         },
         addCount(){
             this.count++
@@ -252,6 +310,6 @@ export default {
     border-radius: 100%;
 }
 
-.text_table {
-}
+/* .text_table {
+} */
 </style>
