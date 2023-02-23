@@ -10,6 +10,7 @@ import Chakra, {
 } from '@chakra-ui/vue'
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
+import VueSwal from 'vue-swal'
 
 Vue.use(Chakra)
 Vue.use(Vuesax, {
@@ -33,3 +34,5 @@ new Vue({
     ]);
   }
 }).$mount('#app')
+
+Vue.use(VueSwal)
