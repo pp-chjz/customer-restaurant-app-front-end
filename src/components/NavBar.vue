@@ -1,35 +1,25 @@
 <template>
-  <div id="app">
-    <c-flex
-        borderTopLeftRadius="1.5rem"
-        borderTopRightRadius="1.5rem"
-        class="navbar"
-        wrap="wrap"
-        justify="center"
-      >
-      <nav>
-        <li><a href="#/">Home</a></li>
-
-        <li><a href="#/about">About</a></li>
-
-        <li><a href="#/selectTable">Select Table</a></li>
-
-        <li><a href="#/allMenuPage">All Menu</a></li>
-      </nav>
-    </c-flex>
-    
-  </div>
+  <div id="navbar">
+    <a class="active" href="#">Home</a>
+    <a href="#/about">About</a>
+    <a href="#/selectTable">Select Table</a>
+    <a href="#/allMenuPage">All Menu</a>
+</div>
 </template>
 
 <script>
-import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid } from '@chakra-ui/vue';
+import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid, onBeforeUnmount, onMounted } from '@chakra-ui/vue';
+
 export default {
   name: "app",
   components: { 
     CText, CMenu, CMenuButton,
     CSimpleGrid, CFlex
   }
-};
+  
+
+}
+
 </script>
 
 <style lang="scss">
@@ -41,42 +31,45 @@ export default {
   color: #2c3e50;
 }
 
-nav {
-  margin: 18px;
-  list-style-type: none;
-  a {
-    font-weight: 10;
-    color: #ffffff;
-
-    // &.router-link-exact-active {
-    //   color: #42b983;
-    // }
-  }
-}
-
-.navbar {
+#navbar {
   position: fixed;
-  top: 600px;
-  width: 390px;
-  height: 80px;
+  top: 0;
+  left: 0;
+  height: 3em;
+  overflow: hidden;
+  width: 100%;
   background-color: #690505;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 7px #777;
+  transition: background-color 0.4s ease-out;
+  z-index: 99;
 }
 
-nav li {
+#nav.scroll {
+  background-color: #A1572F;
+  color: #eef;
+}
+
+#navbar a {
   float: left;
-  margin: 0 0 0 15px;
-}
-
-nav li a {
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
   text-decoration: none;
-  transition: all .3s;
-  border-bottom: 3px solid transparent;
+  font-size: 17px;
 }
 
-nav li a:hover{
+#navbar a:hover {
   color: #FFC529;
-  padding-bottom: 20px;
-  border-bottom: 3px solid #FFC529;
+  padding-bottom: 15px;
+  border-bottom: 5px solid #FFC529;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 </style>

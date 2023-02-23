@@ -1,8 +1,8 @@
 <template>
   <div class="about">
-    <c-stack should-wrap-children is-inline ml="3%" mt="5%">
+    <c-stack  should-wrap-children is-inline ml="3%" mt="16%">
         <c-grid template-columns="repeat(2, fr)">
-            <c-text  fontSize="xl" > Welcome </c-text>
+            <c-text font-weight="bold"  fontSize="xl" > Welcome </c-text>
             <c-heading color="#B30F0F"> {{ "Saengchai Phochana" }}</c-heading>
         </c-grid>
         <c-box  
@@ -93,33 +93,32 @@
 
     <!-- Show All Menus -->
     <div v-for="item in menus.data" :key="item.id">
-        <c-flex mt="4%" ml="3%" borderBottom="2px" borderRadius="md" borderColor="black.200" align="center">
-            <c-flex bg="blue.50" w="200px" size="150px" align="center" justify="center">
+        <c-flex mt="4%"  borderBottom="2px" borderRadius="xl" borderColor="#2D3748" borderBottomWidth="2px" align="center">
+            <c-flex  w="200px" size="150px" align="center" justify="center">
                 <c-image src="gibberish.png" size="120px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
             </c-flex>
-            <c-flex bg="pink.100" w="200px" size="150px" align="center" justify="center">
+            <c-flex  w="200px" size="150px" align="center" justify="center">
                 <c-grid
                     size="150px"    
                     template-rows="repeat(3, 1fr)"
                     gap="1"
                 >
-                    <c-text text-align="left">
+                    <c-text text-align="center">
                     {{ item.name_TH }}
                     </c-text>
-                    <c-text fontWeight="bold" text-align="left">
+                    <c-text fontWeight="bold" text-align="center">
                     {{ item.name_ENG }}
                     </c-text>
 
-                    <c-badge v-if="item.menu_status === 'in stock'" mx="2" mt="5%"  variant-color="green">In Stock</c-badge>
+                    <c-badge v-if="item.menu_status === 'in stock'" mx="10" mt="5%"  variant-color="green">In Stock</c-badge>
                     <c-badge v-if="item.menu_status === 'out of stock'"  mx="2" variant-color="red">Our Of Stock</c-badge>
-
                 </c-grid>
             </c-flex>
             
-            <c-flex bg="indigo.100" size="150px" align="center" justify="center">
+            <c-flex  size="150px" align="center" justify="center">
                 <c-grid
-                size="150px"
-                gap="1"
+                    size="150px"
+                    gap="1"
                 >
                     <c-text fontWeight="bold" color="black">
                         {{ item.price }} THB
@@ -141,24 +140,25 @@
                     <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
                     <!-- <vs-popup  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
                         <c-image src="gibberish.png" size="300px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
-                        <p class="name">{{ item.name_TH }} ({{ item.name_ENG }})</p>
+                        <p class="menu_name" >{{ item.name_TH }} ({{ item.name_ENG }})</p>
                         <br>
-                        <p class="name">หมายเหตุถึงร้านอาหาร (ไม่จำเป็นต้องระบุ)</p>
+                        <p class="optional">หมายเหตุถึงร้านอาหาร (ไม่จำเป็นต้องระบุ)</p>
 
                         <vs-input class="inputx" size="large" placeholder="ระบุรายละเอียดคำขอ" v-model="value1"/> -->
 
                         <!-- เพิ่มลดจำนวนจาน -->
                         <!-- <c-flex align="center">
                             <c-flex bg="green.50" align="flex-end">
-                                <c-button @click="deCount" variant-color="red">-</c-button>
+                                <c-button  @click="deCount" variant-color="red" :isDisabled=disabled> - </c-button>
                             </c-flex>
                             <c-flex bg="blue.50" size="40px" align="center" justify="center">
                                 <c-text text-align="center">
                                 {{ count }}
                                 </c-text>
                             </c-flex>
+
                             <c-box>
-                                <c-button  @click="addCount" variant-color="green">+</c-button>
+                                <c-button  @click="addCount" variant-color="green" > + </c-button>
                             </c-box>
                         </c-flex> -->
                         <!-- เพิ่มลดจำนวนจาน -->
@@ -169,9 +169,6 @@
                         </c-button> 
                     </vs-popup> -->
                     <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
-
-
-
                 </c-grid>
             </c-flex>
 
@@ -195,6 +192,7 @@ import { CInput,CSelect,CNumberInput,
   CBadge, CFlex, CText, CHeading, CIcon,  CGrid, CGridItem,
   CTextarea, CIconButton ,CFormControl ,
   } from "@chakra-ui/vue";
+  
 
 export default {
     name: 'AllMenu',
@@ -243,7 +241,8 @@ export default {
                 "price":0,
                 "order_time":"1985-08-05 13:25:30",
                 "complete_at":"1985-08-05 13:25:30"
-            }
+            },
+            disabled: true
         }
     },
     async created(){
@@ -293,9 +292,15 @@ export default {
         },
         addCount(){
             this.count++
+            if (this.count >= 1) {
+                this.disabled = false
+            }
         },
         deCount(){
             this.count--
+            if (this.count == 0) {
+                this.disabled = true
+            }
         }
     }
 }
@@ -310,6 +315,18 @@ export default {
     border-radius: 100%;
 }
 
-/* .text_table {
-} */
+.menu_name {
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 4%;
+}
+
+.optional {
+    margin-bottom: 2%;
+    font-size: small;
+}
+
+.input {
+    margin-bottom: 4%;
+}
 </style>

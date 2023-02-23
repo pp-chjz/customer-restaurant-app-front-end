@@ -15,7 +15,7 @@
             <!-- เพิ่มลดจำนวนจาน -->
             <c-flex align="center">
                 <c-flex bg="green.50" align="flex-end">
-                    <c-button @click="deCount" variant-color="red">-</c-button>
+                    <c-button @click="deCount" variant-color="red" :isDisabled="disabled">-</c-button>
                 </c-flex>
                 <c-flex bg="blue.50" size="40px" align="center" justify="center">
                     <c-text text-align="center">
@@ -82,7 +82,8 @@ export default {
                 "total_price": 0,
                 "order_time":"1985-08-05 13:25:30",
                 "menus":[]
-            }
+            },
+            disabled: true
         }
     },
     async created(){
@@ -133,9 +134,15 @@ export default {
         },
         addCount(){
             this.count++
+            if (this.count >= 1) {
+                this.disabled = false
+            }
         },
         deCount(){
             this.count--
+            if (this.count == 0) {
+                this.disabled = true
+            }
         }
     }
 }
