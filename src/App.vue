@@ -1,9 +1,11 @@
 <template>
+  <div>
+    <nav-bar/>
   <c-theme-provider>
     <c-reset />
-        <nav-bar/>
         <router-view/>
   </c-theme-provider>
+</div>
 </template>
 
 <script>
