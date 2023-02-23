@@ -240,7 +240,7 @@ export default {
                 "status":0,
                 "QTY":0,
                 "food_status":0,
-                "total_price":0,
+                "price":0,
                 "order_time":"1985-08-05 13:25:30",
                 "complete_at":"1985-08-05 13:25:30"
             }
