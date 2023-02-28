@@ -264,7 +264,10 @@ export default {
         },
         async order(){
             console.log("payload = ", this.form)
+            console.log("table_number = ", this.form.table_number)
+
             await OrderApi.dispatch("createOrder" , this.form)
+            // await OrderApi.dispatch("addOrderToTable" , this.form)
 
 
         },

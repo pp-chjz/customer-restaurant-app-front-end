@@ -27,6 +27,17 @@ export default new Vuex.Store({
             // console.log("res = ", res)
             if (res.status === 201) {
               commit('setNewOrder', res.data)
+
+              let table_id = JSON.parse(localStorage.getItem("table_number"));
+              console.log("table_id = " , table_id)
+              let payload = {
+                order_id: res.data.id
+              }
+              let res_table = await backendInstance.put(`/api/food-table/${table_id}`, payload , header);
+              console.log("res_table.data =" , res_table.data)
+
+
+
               console.log(res.data)
               return {
                 success: true,

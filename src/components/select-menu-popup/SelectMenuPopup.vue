@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vs-button @click="popupActivo2=true" color="primary" type="filled">เลือก</vs-button>
+    <vs-button @click="popupActivo2=true" color="green" type="filled">เลือก</vs-button>
 
 
         <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
@@ -124,6 +124,8 @@ export default {
             console.log("form after = ", this.form)
 
             this.$emit('saveInfo',returnData)
+            this.popupActivo2 =false
+
         },
         edit(id){
             console.log("index.id = ", id)

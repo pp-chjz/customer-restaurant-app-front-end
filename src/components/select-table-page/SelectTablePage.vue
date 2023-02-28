@@ -65,6 +65,8 @@ export default {
         let res = await AuthUser.dispatch('login',this.form)
         if (res.success) {
           this.$swal("สำเร็จ" , `ยินดีต้อนรับคุณ ${res.user.name}`, "success");
+          localStorage.setItem('table_number', JSON.stringify(this.table_number));
+
           this.$router.push("/allMenuPage");
         }
         console.log(res)
