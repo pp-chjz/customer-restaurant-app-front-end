@@ -11,11 +11,23 @@
         </c-select>
       </c-box>
 
+      <c-text fontWeight="bold" mt="5%" ml="5%">จำนวนลูกค้า</c-text>
+      <c-box mt="1%" w="30%" ml="5%">
+        <c-number-input :default-value="1" :max="40" :min="0">
+        <c-number-input-field type="number" borderColor="gray.800" />
+        <c-number-input-stepper>
+        <c-numberIncrement-stepper/>
+        <c-number-decrement-stepper />
+        </c-number-input-stepper>
+        </c-number-input>
+      </c-box>
+       
+
       <c-flex justify="center" mt="13%">
         <img class="image" src="@/assets/saeng.png"/>
       </c-flex>
       <c-flex justify="center">
-        <c-button @click="summit" borderRadius="1.5rem" mt="20%" width="295px" color="black" variant-color="yellow" variant="solid" size="lg">
+        <c-button @click="summit" borderRadius="1.5rem" mt="20%" mb="10%" width="295px" color="black" variant-color="yellow" variant="solid" size="lg">
             Confirm Table
         </c-button>
       </c-flex>
@@ -25,27 +37,37 @@
 </template>
 
 <script>
-import { CSelect , CReset , CBox , CButton,
-         CText, CHeading, CFlex } from "@chakra-ui/vue";
 import HelloWorld from '@/components/HelloWorld.vue'
 import NavBar from '@/components/NavBar.vue'
 import AuthUser from '@/store/AuthUser.js'
+import { CSelect , CReset , CBox , CButton,
+         CText, CHeading, CFlex,
+         CInput, CNumberInput,
+         CNumberInputField,
+         CNumberInputStepper,
+         CNumberIncrementStepper,
+         CNumberDecrementStepper, } from "@chakra-ui/vue";
 
 export default {
   name: "App",
   components: {
     CSelect, CReset, CBox,
     CButton, HelloWorld, NavBar,
-    CText, CHeading, CFlex
+    CText, CHeading, CFlex,
+    CInput, CNumberInput,
+         CNumberInputField,
+         CNumberInputStepper,
+         CNumberIncrementStepper,
+         CNumberDecrementStepper,
   },
   data(){
       return{
           table_number:"",
           table:['1','2','3','4'],
           form:{
-              email: 'user4@hotmail.com',
-              password: 'user',
-          }
+              email: 'baitoey2@hotmail.com',
+              password: 'bt',
+          },
       }
   },
   async created(){
@@ -62,6 +84,7 @@ export default {
         })
       }
       else if (this.table_number != "") {
+        console.log("form = ", this.form);
         let res = await AuthUser.dispatch('login',this.form)
         if (res.success) {
           this.$swal("สำเร็จ" , `ยินดีต้อนรับคุณ ${res.user.name}`, "success");
