@@ -242,16 +242,25 @@ export default {
                 "order_time":"1985-08-05 13:25:30",
                 "complete_at":"1985-08-05 13:25:30"
             },
-            disabled: true
+            disabled: true,
         }
     },
     async created(){
         console.log("All Menu Page Created");
         await this.fetchMenu()
         this.form.table_number = JSON.parse(localStorage.getItem("table_number"));
+        console.log("this.form.table_number = ", this.form.table_number)
+        parseInt(this.form.table_number)
 
     },
     methods:{
+        getNow() {
+            const today = new Date();
+            const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            const dateTime = date +' '+ time;
+            this.form.order_time = dateTime;
+        },
         async fetchMenu(){
             // console.log("fetchMenu")
             await MenuApi.dispatch("fetchMenu")
@@ -264,9 +273,24 @@ export default {
         },
         async order(){
             console.log("payload = ", this.form)
-            console.log("table_number = ", this.form.table_number)
+            console.log("menus = ", this.form.menus)
 
+            for(let i = 0; i< this.form.menus.length ; i++){
+                this.form.total_price += this.form.menus[i].price
+                // console.log("this.form.menus.price = ",this.form.menus)
+
+                // console.log("this.form.total_price = ",this.form.total_price)
+                // console.log("loop")
+            }
+            this.getNow()
             await OrderApi.dispatch("createOrder" , this.form)
+            this.form = {
+                "cancel_status":1,
+                "order_status":1,
+                "total_price": 0,
+                "order_time":"1985-08-05 13:25:30",
+                "menus":[]
+            }
             // await OrderApi.dispatch("addOrderToTable" , this.form)
 
 
