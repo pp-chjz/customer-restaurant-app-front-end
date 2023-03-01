@@ -40,6 +40,8 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import NavBar from '@/components/NavBar.vue'
 import AuthUser from '@/store/AuthUser.js'
+import TableApi from '@/store/TableApi.js'
+
 import { CSelect , CReset , CBox , CButton,
          CText, CHeading, CFlex,
          CInput, CNumberInput,
@@ -63,15 +65,26 @@ export default {
   data(){
       return{
           table_number:"",
-          table:['1','2','3','4'],
+          table:[],
           form:{
               email: 'user4@hotmail.com',
               password: 'user',
           },
+          total_table:0,
+          num:0,
       }
   },
   async created(){
       console.log("select table page created");
+      await TableApi.dispatch('fetchTotalTable')
+      this.total_table = TableApi.getters.getTotalTable
+      this.total_table = this.total_table.data
+      console.log('this.total_table = ', this.total_table)
+      for(let i = 0 ; i<this.total_table ; i++)
+      {
+        this.num = i+1
+        this.table.push(this.num.toString())
+      }
   },
   methods:{
     async summit() {
