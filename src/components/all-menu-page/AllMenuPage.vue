@@ -15,33 +15,9 @@
             borderBottomLeftRadius="100px"
             bg="#FFC529"
         > 
-            <c-text class="text_table" ml="13%" py="23px" fontSize="sm"> โต๊ะที่ 2</c-text>
+            <c-text class="text_table" ml="13%" py="23px" fontSize="sm"> โต๊ะที่ {{ this.form.table_number }}</c-text>
         </c-box>
     </c-stack>
-    
-    <!-- Search Foods (Version 1 use c-textarea) -->
-    <!-- <c-box
-        ml="3%"
-        mt="7%"
-        width="360px"
-        height="45px"
-        borderWidth="0.1rem"
-        borderRadius="42rem"
-        bg="#2F383A"
-        color="#A7A7A7"
-    > 
-    <c-stack should-wrap-children is-inline ml="3%" mt="2%">
-        <c-flex w="30px" >
-            <img  src="@/assets/icon_search.png"/>
-        </c-flex>
-        <c-flex w="100px" >
-            <c-textarea ml="3%" py="4px" fontSize="sm">Search Foods</c-textarea>
-        </c-flex>
-        
-    </c-stack>
-    </c-box> -->
-
-    <!-- Search Foods (Version 2 use c-input) -->
     <c-form-control>
         <c-stack should-wrap-children is-inline ml="3%" mt="2%">
             <c-input 
@@ -87,7 +63,7 @@
         > Seafood </c-button>
     </c-stack>
 
-    <c-button @click="order()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+    <c-button class="getOrder" @click="order()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
         สั่งอาหาร
     </c-button> 
 
@@ -120,55 +96,16 @@
                     size="150px"
                     gap="1"
                 >
-                    <c-text fontWeight="bold" color="black">
-                        {{ item.price }} THB
-                    </c-text>
-                    <select-menu-popup
-                    v-bind:name_TH="item.name_TH"
-                    v-bind:name_ENG="item.name_ENG"
-                    v-bind:id="item.id"
-                    v-bind:price="item.price"
-                    v-bind:form="form.menus"
-                    @saveInfo="addMenu"></select-menu-popup>
-
-                    <!-- <a @click='edit(index.id)' v-bind="index" align="center"> 
-                        <c-icon name="add"/>
-                    </a> -->
-                    <!-- <vs-button @click="popupActivo2=true" color="primary" type="filled">เลือก</vs-button> -->
-
-
-                    <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
-                    <!-- <vs-popup  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
-                        <c-image src="gibberish.png" size="300px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
-                        <p class="menu_name" >{{ item.name_TH }} ({{ item.name_ENG }})</p>
-                        <br>
-                        <p class="optional">หมายเหตุถึงร้านอาหาร (ไม่จำเป็นต้องระบุ)</p>
-
-                        <vs-input class="inputx" size="large" placeholder="ระบุรายละเอียดคำขอ" v-model="value1"/> -->
-
-                        <!-- เพิ่มลดจำนวนจาน -->
-                        <!-- <c-flex align="center">
-                            <c-flex bg="green.50" align="flex-end">
-                                <c-button  @click="deCount" variant-color="red" :isDisabled=disabled> - </c-button>
-                            </c-flex>
-                            <c-flex bg="blue.50" size="40px" align="center" justify="center">
-                                <c-text text-align="center">
-                                {{ count }}
-                                </c-text>
-                            </c-flex>
-
-                            <c-box>
-                                <c-button  @click="addCount" variant-color="green" > + </c-button>
-                            </c-box>
-                        </c-flex> -->
-                        <!-- เพิ่มลดจำนวนจาน -->
-
-
-                        <!-- <c-button @click="summit(item.name_TH)" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
-                            เพิ่มเมนูนี้
-                        </c-button> 
-                    </vs-popup> -->
-                    <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
+                <c-text fontWeight="bold" color="black">
+                    {{ item.price }} THB
+                </c-text>
+                <select-menu-popup
+                v-bind:name_TH="item.name_TH"
+                v-bind:name_ENG="item.name_ENG"
+                v-bind:id="item.id"
+                v-bind:price="item.price"
+                v-bind:form="form.menus"
+                @saveInfo="addMenu"></select-menu-popup>
                 </c-grid>
             </c-flex>
 
@@ -274,7 +211,6 @@ export default {
         async order(){
             console.log("payload = ", this.form)
             console.log("menus = ", this.form.menus)
-
             for(let i = 0; i< this.form.menus.length ; i++){
                 this.form.total_price += this.form.menus[i].price
                 // console.log("this.form.menus.price = ",this.form.menus)
@@ -282,15 +218,29 @@ export default {
                 // console.log("this.form.total_price = ",this.form.total_price)
                 // console.log("loop")
             }
-            this.getNow()
-            await OrderApi.dispatch("createOrder" , this.form)
-            this.form = {
+            
+            if (this.form.menus == "") {
+                this.$swal({
+                    icon: 'error',
+                    title: 'ผิดพลาด',
+                    text: 'ยังไม่มีรายการอาหาร',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+            else if (this.form.menus != "") {
+                this.$swal("สั่งรายการอาหารสำเร็จ", ` โต๊ะที่ ${this.form.table_number}` , "success");
+                this.getNow()
+                await OrderApi.dispatch("createOrder" , this.form)
+                this.form = {
                 "cancel_status":1,
                 "order_status":1,
                 "total_price": 0,
                 "order_time":"1985-08-05 13:25:30",
                 "menus":[]
             }
+            }
+
+            
             // await OrderApi.dispatch("addOrderToTable" , this.form)
 
 
@@ -355,5 +305,18 @@ export default {
 
 .input {
     margin-bottom: 4%;
+}
+
+.getOrder {
+    position: fixed;
+    top: 87%;
+    right: 10%;
+    height: 2em;
+    overflow: hidden;
+    width: 80%;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 7px #777;
+    transition: background-color 0.4s ease-out;
+    z-index: 99;
 }
 </style>
