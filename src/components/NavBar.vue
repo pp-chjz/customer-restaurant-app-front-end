@@ -1,20 +1,22 @@
 <template>
   <div id="navbar">
-    <a class="active" href="#">Home</a>
-    <a href="#/about">About</a>
-    <a href="#/selectTable">Select Table</a>
-    <a href="#/allMenuPage">All Menu</a>
+    <!-- <a class="active" href="#">Home</a>
+    <a href="#/about">About</a> -->
+    <a href="#/selectTable">Home</a>
+    <a class="button" href="#/">Menu</a>
+    <!-- <a href="#/allMenuPage">All Menu</a> -->
 </div>
 </template>
 
 <script>
-import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid, onBeforeUnmount, onMounted } from '@chakra-ui/vue';
+import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid, CBox, CImage } from '@chakra-ui/vue';
 
 export default {
   name: "app",
   components: { 
     CText, CMenu, CMenuButton,
-    CSimpleGrid, CFlex
+    CSimpleGrid, CFlex, CBox,
+    CImage
   }
   
 

@@ -67,8 +67,8 @@ export default {
           table_number:"",
           table:[],
           form:{
-              email: 'user4@hotmail.com',
-              password: 'user',
+              email: 'bt@hotmail.com',
+              password: 'bt',
           },
           total_table:0,
           num:0,
@@ -102,7 +102,6 @@ export default {
         if (res.success) {
           this.$swal("สำเร็จ" , `ยินดีต้อนรับคุณ ${res.user.name}`, "success");
           localStorage.setItem('table_number', JSON.stringify(this.table_number));
-
           this.$router.push("/allMenuPage");
         }
         console.log(res)
