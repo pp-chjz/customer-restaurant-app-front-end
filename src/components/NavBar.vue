@@ -4,6 +4,8 @@
     <a href="#/about">About</a> -->
     <a href="#/selectTable">Home</a>
     <a class="button" href="#/allMenuPage">Menu</a>
+    <a class="button" href="#/checkBillPage">Check Bill</a>
+
     <!-- <a href="#/allMenuPage">All Menu</a> -->
 </div>
 </template>

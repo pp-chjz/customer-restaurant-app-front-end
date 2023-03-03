@@ -9,16 +9,31 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       newOrderCreated:[],
+      ordersUnpaid:[],
+
   },
   getters: {
       getNewOrder: (state) => state.newOrderCreated,
+      getUnpaidOrders: (state) => state.ordersUnpaid,
+
   },
   mutations: {
     async setNewOrder(state, { res }){
       state.newOrderCreated = (await res)
     },
+    async setUnpaidOrder(state, { res }){
+      state.ordersUnpaid = (await res).data
+    },
   },
   actions: {
+    async fetchUnpaidOrder({ commit } , payload) {
+      console.log("fetchUnpaidOrder")
+      let header = AuthService.getApiHeader();
+      console.log("header = " , header)
+      let res = await backendInstance.post(`/api/get-order-unpaid` , payload , header);
+      console.log("fetchUnpaidOrder" , res.data)
+      commit("setUnpaidOrder", {res} );
+  },
     async createOrder({ commit } , payload){
         try {
             let header = AuthService.getApiHeader();

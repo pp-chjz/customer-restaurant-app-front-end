@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SelectTablePage from '../components/select-table-page/SelectTablePage.vue'
 import AllMenuPage from '../components/all-menu-page/AllMenuPage.vue'
+import CheckBillPage from '../components/check-bill-page/CheckBillPage.vue'
+
 
 
 Vue.use(VueRouter)
@@ -30,6 +32,11 @@ const routes = [
     path: '/allMenuPage',
     name: 'allMenuPage',
     component: AllMenuPage
+  },
+  {
+    path: '/checkBillPage',
+    name: 'checkBillPage',
+    component: CheckBillPage
   },
 ]
 

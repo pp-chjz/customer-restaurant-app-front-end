@@ -144,7 +144,7 @@ export default {
             this.id = 0
             this.price = 0
             this.comment = ""
-            this.count = 0
+            this.count = 1
 
             console.log("returndata = ", returnData)
             this.form.push(returnData)
