@@ -231,16 +231,22 @@ export default {
                 })
             }
             else if (this.form.menus != "") {
-                this.$swal("สั่งรายการอาหารสำเร็จ", ` โต๊ะที่ ${this.form.table_number}` , "success");
-                this.getNow()
-                await OrderApi.dispatch("createOrder" , this.form)
-                this.form = {
-                "cancel_status":1,
-                "order_status":1,
-                "total_price": 0,
-                "order_time":"1985-08-05 13:25:30",
-                "menus":[]
-            }
+                    this.$swal("สั่งรายการอาหารสำเร็จ", ` โต๊ะที่ ${this.form.table_number}` , "success");
+                    this.getNow()
+                    await OrderApi.dispatch("createOrder" , this.form)
+                    this.form.cancel_status = 1
+                    this.form.order_status = 1
+                    this.form.total_price = 0
+                    this.form.order_time = "1985-08-05 13:25:30"
+                    this.form.menus = []
+
+                //     this.form = {
+                //     "cancel_status":1,
+                //     "order_status":1,
+                //     "total_price": 0,
+                //     "order_time":"1985-08-05 13:25:30",
+                //     "menus":[]
+                // }
             }
 
             
