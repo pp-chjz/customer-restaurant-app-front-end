@@ -3,7 +3,7 @@
     <!-- <a class="active" href="#">Home</a>
     <a href="#/about">About</a> -->
     <a href="#/selectTable">Home</a>
-    <a class="button" href="#/">Menu</a>
+    <a class="button" href="#/allMenuPage">Menu</a>
     <!-- <a href="#/allMenuPage">All Menu</a> -->
 </div>
 </template>

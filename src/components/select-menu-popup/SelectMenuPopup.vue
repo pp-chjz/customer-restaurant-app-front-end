@@ -29,9 +29,29 @@
             <!-- เพิ่มลดจำนวนจาน -->
 
 
-            <c-button @click="saveInfo()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+            <c-button @click="confirm()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
                 เพิ่มเมนูนี้
             </c-button> 
+
+            <vs-popup  title="ยืนยันอาหารที่สั่งหรือไม่" :active.sync="popupActivo3">
+                <p class="name">{{ name_TH }} ({{ name_ENG }})</p>
+                <br>
+                <p class="name">จำนวน {{ count }} จาน ราคา {{  total_price }} บาท</p>
+
+
+                <!-- เพิ่มลดจำนวนจาน -->
+                <c-flex align="center">
+                    <c-button @click="cancel()" mt="2rem" width="full" variant-color="red" variant="solid" size="lg">
+                    ยกเลิก
+                </c-button> 
+                <c-button @click="saveInfo()" mt="2rem" width="full" variant-color="green" variant="solid" size="lg">
+                    ยืนยัน
+                </c-button> 
+                </c-flex>
+                <!-- เพิ่มลดจำนวนจาน -->
+
+                
+            </vs-popup>
         </vs-popup>
         <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
   </div>
@@ -73,7 +93,7 @@ export default {
             comment:'',
             popupActivo2:false,
             popupActivo3:false,
-            count:0,
+            count:1,
             total_price:0,
             timestamp:"",
             form_payload:{
@@ -99,8 +119,15 @@ export default {
             const dateTime = date +' '+ time;
             this.timestamp = dateTime;
         },
-        saveInfo() {
+        confirm(){
             this.total_price = this.price * this.count
+            this.popupActivo3 = true
+        },
+        cancel(){
+            this.popupActivo3 = false
+        },
+        saveInfo() {
+            // this.total_price = this.price * this.count
             this.getNow()
             let returnData = {
                 menu_id: this.id,
@@ -125,6 +152,8 @@ export default {
 
             this.$emit('saveInfo',returnData)
             this.popupActivo2 =false
+            this.popupActivo3 = false
+
 
         },
         edit(id){

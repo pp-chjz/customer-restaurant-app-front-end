@@ -15,7 +15,7 @@
             borderBottomLeftRadius="100px"
             bg="#FFC529"
         > 
-            <c-text class="text_table" ml="13%" py="23px" fontSize="sm"> โต๊ะที่ {{ this.form.table_number }}</c-text>
+            <c-text class="text_table" ml="13%" py="23px" fontSize="sm"> โต๊ะที่ {{ this.table_number }}</c-text>
         </c-box>
     </c-stack>
     <c-form-control>
@@ -180,12 +180,15 @@ export default {
                 "complete_at":"1985-08-05 13:25:30"
             },
             disabled: true,
+            table_number:0,
         }
     },
     async created(){
         console.log("All Menu Page Created");
         await this.fetchMenu()
         this.form.table_number = JSON.parse(localStorage.getItem("table_number"));
+        this.table_number = JSON.parse(localStorage.getItem("table_number"));
+
         console.log("this.form.table_number = ", this.form.table_number)
         parseInt(this.form.table_number)
 
@@ -309,7 +312,7 @@ export default {
 
 .getOrder {
     position: fixed;
-    top: 87%;
+    top: 90%;
     right: 10%;
     height: 2em;
     overflow: hidden;

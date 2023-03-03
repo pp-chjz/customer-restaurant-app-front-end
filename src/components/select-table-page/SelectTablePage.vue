@@ -67,8 +67,8 @@ export default {
           table_number:"",
           table:[],
           form:{
-              email: 'bt@hotmail.com',
-              password: 'bt',
+              email: 'user4@hotmail.com',
+              password: 'user',
           },
           total_table:0,
           num:0,
