@@ -1,37 +1,56 @@
 <template>
     <div>
-        <c-stack  should-wrap-children is-inline ml="3%" mt="16%">
-            <p> test </p>
-        </c-stack>
+        <c-stack is-inline mt="20%">
+            <img class="bill" src="@/assets/bill.png" style="width:35%;" />
+        <c-heading class="head" align="center" mb="5%" color="#11225F"> {{ "Bill" }}</c-heading>
+    </c-stack>
+
+        <c-box>
+            <c-stack :spacing="12" is-inline mt="8%">
+                <c-text ml="3%" color="#CC2D2D">Order Items</c-text>
+                <c-text ml="6%" color="#CC2D2D">QTY</c-text>
+                <c-text color="#CC2D2D">Price</c-text>
+                <c-text color="#CC2D2D">Status</c-text>
+            </c-stack>
+            <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" />
+        </c-box>
+
         <div v-for="item in orders.data" :key="item.id" mt="10%">
-
-            <!-- <c-box bg="tomato" w="100%" p="4" color="white" mt="10%">
-                {{ item }}
-            </c-box> -->
+            
             <div v-for="menu in item.menus" :key="menu.id">
+                <c-grid w="381px" template-columns="repeat(4, 1fr)" gap="1">
+                    <c-box ml="10%" w="100%" h="10" >
+                        <c-text> {{  menu.name_TH }} </c-text>
+                            
+                    </c-box>
+
+                    <c-box ml="78%" w="100%" h="10"  >
+                        <c-text > x {{ menu.pivot.QTY }} </c-text>
+                    </c-box>
+
+                    <c-box ml="45%" w="100%" h="10"  >
+                        <c-text> {{ menu.pivot.price }}.00</c-text>
+                    </c-box>
+
+                    <c-box ml="13%" w="100%" h="10"  >
+                        <c-badge v-if="menu.pivot.food_status === 'prepare' " rounded="full" px="2" variant-color="green" ml="3">
+                            Prepare
+                        </c-badge>
+                        <c-badge v-if="menu.pivot.food_status === 'cooking' " rounded="full" px="2" variant-color="yellow" ml="3">
+                            Cooking
+                        </c-badge>
+                        <c-badge v-if="menu.pivot.food_status === 'served' " rounded="full" px="2" variant-color="red" ml="5">
+                            served
+                        </c-badge>
+                    </c-box>
                     
-                <c-flex align="center">
-                    {{  menu.name_TH }}
-                    x {{ menu.pivot.QTY }}
-                    <c-badge v-if="menu.pivot.food_status === 'prepare' " rounded="full" px="2" variant-color="green" ml="2">
-                        Prepare
-                    </c-badge>
-                    <c-badge v-if="menu.pivot.food_status === 'cooking' " rounded="full" px="2" variant-color="yellow" ml="2">
-                        Cooking
-                    </c-badge>
-                    <c-badge v-if="menu.pivot.food_status === 'served' " rounded="full" px="2" variant-color="red" ml="2">
-                        served
-                    </c-badge>
-                    {{ menu.pivot.price }} บาท
-
-
-                </c-flex>
-
-                ราคาทั้งหมด {{ total_price }} บาท
+                </c-grid>
+                <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" mt="6%"/> 
             </div>
-
         </div>
-
+        <c-text align="center" mt="15%" fontWeight="bold" color="#C72319">
+            Total Price : {{ total_price }} THB
+        </c-text>
     </div>
     
 </template>
@@ -48,7 +67,8 @@ import { CInput,CSelect,CNumberInput,
   CNumberDecrementStepper, CStack,
   CButton, CImage, CSimpleGrid, CBox,
   CBadge, CFlex, CText, CHeading, CIcon,  CGrid, CGridItem,
-  CTextarea, CIconButton ,CFormControl ,
+  CTextarea, CIconButton ,CFormControl, span,
+  CDivider, CPseudoBox
   } from "@chakra-ui/vue";
 
 export default {
@@ -67,7 +87,7 @@ export default {
         CButton, CText, CHeading, CIcon,
         CImage, CSimpleGrid ,CBox ,CBadge ,CFlex ,
         CGrid, CGridItem, CStack, CTextarea , CFormControl ,
-        SelectMenuPopup
+        SelectMenuPopup, span, CDivider, CPseudoBox
 
     },
     data(){
@@ -100,5 +120,18 @@ export default {
 </script>
 
 <style>
+.border {
+    margin-left: 2%;
+    width: 370px;
+}
 
+.bill {
+    margin-left: 5%;
+    /* margin-top: 19%; */
+}
+
+.head {
+    margin-right: 44%;
+    margin-top: 7%;
+}
 </style>

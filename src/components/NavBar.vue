@@ -1,27 +1,65 @@
 <template>
-  <div id="navbar">
-    <!-- <a class="active" href="#">Home</a>
-    <a href="#/about">About</a> -->
+  <div id="navbar" >
     <a href="#/selectTable">Home</a>
     <a class="button" href="#/allMenuPage">Menu</a>
-    <a class="button" href="#/checkBillPage">Check Bill</a>
+    <!-- <a class="button" href="#/checkBillPage">Notice</a> -->
 
-    <!-- <a href="#/allMenuPage">All Menu</a> -->
+    <div>
+      <a @click="open" >Notice</a>
+      <c-modal
+        :size="size"
+        :is-open="isOpen"
+        :on-close="close"
+        :block-scroll-on-mount="blockScrollOnMount"
+      >
+      
+        <c-modal-content >
+          <img class="checkbill" src="@/assets/money.png" style="width:25%;" />
+            <c-link as="router-link" to="/checkBillPage" align="center" mt="10%" font-weight="bold"> 
+              Check Bill
+            </c-link>
+            <c-modal-close-button />
+            <c-modal-footer>
+            </c-modal-footer>
+          </c-modal-content>
+          <c-modal-overlay />
+        </c-modal>
+      </div>
+    
 </div>
 </template>
 
 <script>
-import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid, CBox, CImage } from '@chakra-ui/vue';
+import AuthUser from "../store/AuthUser";
+import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid, CBox, CImage,
+         CModal, CModalContent, CModalOverlay, CModalCloseButton, 
+         CModalBody, CLink, CModalFooter, CButton } from '@chakra-ui/vue';
+         
 
 export default {
   name: "app",
   components: { 
     CText, CMenu, CMenuButton,
     CSimpleGrid, CFlex, CBox,
-    CImage
-  }
-  
-
+    CImage, CModal, CModalContent, CModalOverlay, 
+    CModalCloseButton, CModalBody,
+    CLink, CModalFooter, CButton
+  },
+  data () {
+    return {
+      isOpen: false,
+      size: 'xs',
+    }
+  },
+  methods: {
+    open() {
+      this.isOpen = true
+    },
+    close() {
+      this.isOpen = false
+    },
+    
+  },
 }
 
 </script>
@@ -74,6 +112,11 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
+}
+
+.checkbill {
+  margin-left: 37%;
+  margin-top: 14%;
 }
 
 </style>
