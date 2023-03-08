@@ -27,10 +27,16 @@
 
                 </c-flex>
 
-                ราคาทั้งหมด {{ total_price }} บาท
+
+
             </div>
 
+
         </div>
+        ราคาทั้งหมด {{ total_price }} บาท
+
+        <c-button @click="checkbill" variant-color="yellow" >check bill</c-button>
+
 
     </div>
     
@@ -79,6 +85,11 @@ export default {
                 table_number:0,
             },
             total_price:0,
+            can_check_bill:true,
+            payload_order_status:{
+                order_id: 0,
+                order_status:0
+            }
         }
     },
     async created(){
@@ -93,9 +104,46 @@ export default {
         for(let i = 0 ; i < this.orders.data.length ; i++)
         {
             this.total_price += this.orders.data[i].total_price
+            if(this.orders.data[i].order_status != 'all_served_unpaid')
+            {
+                this.can_check_bill = false
+                console.log("order_status = " , this.orders.data[i].order_status)
+            }
         }
 
     },
+    methods:{
+        async checkbill(){
+            if(this.can_check_bill)
+            {
+                this.$swal({
+                    icon: 'success',
+                    title: 'กรุณาชำระเงินที่เคาเตอร์',
+                    confirmButtonText: 'es, I am sure',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+                console.log("can check bill")
+                for(let i = 0 ; i < this.orders.data.length ; i++)
+                {
+                    this.payload_order_status.order_id = this.orders.data[i].id
+
+                    this.payload_order_status.order_status = 3
+                    await OrderApi.dispatch("updateOrderStatus",this.payload_order_status)
+                }
+                
+                
+            }
+            else
+            {
+                this.$swal({
+                    icon: 'error',
+                    title: 'ไม่สามารถเช็คบิลได้',
+                    text: 'รายการอาหารที่่สั่งยังได้ไม่ครบ',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        }
+    }
 }
 </script>
 

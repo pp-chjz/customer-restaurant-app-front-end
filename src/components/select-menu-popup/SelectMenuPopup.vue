@@ -4,7 +4,7 @@
 
 
         <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
-        <vs-popup  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
+        <vs-popup class="pop-up"  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
             <c-image src="gibberish.png" size="300px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
             <p class="name">{{ name_TH }} ({{ name_ENG }})</p>
             <br>
@@ -180,5 +180,7 @@ export default {
 </script>
 
 <style>
-
+.name {
+  font-size: 20px;
+}
 </style>

@@ -26,6 +26,14 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async updateOrderStatus({ commit } , payload) {
+      console.log("updateOrderStatus")
+      let order_id = payload.order_id
+      let header = AuthService.getApiHeader();
+      console.log("header = " , header)
+      let res = await backendInstance.put(`/api/orders/${order_id}/update-order-status` , payload , header);
+      console.log("updateOrderStatus", res)
+  },
     async fetchUnpaidOrder({ commit } , payload) {
       console.log("fetchUnpaidOrder")
       let header = AuthService.getApiHeader();
