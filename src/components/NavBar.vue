@@ -18,6 +18,9 @@
             <c-link as="router-link" to="/checkBillPage" align="center" mt="10%" font-weight="bold"> 
               Check Bill
             </c-link>
+            <c-link as="router-link" to="/cancelOrderPage" align="center" mt="10%" font-weight="bold"> 
+              Cancel Order
+            </c-link>
             <c-modal-close-button />
             <c-modal-footer>
             </c-modal-footer>

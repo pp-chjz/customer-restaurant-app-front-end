@@ -1,8 +1,7 @@
 <template>
     <div>
         <c-stack is-inline mt="20%">
-            <img class="bill" src="@/assets/bill.png" style="width:35%;" />
-        <c-heading class="head" align="center" mb="5%" color="#11225F"> {{ "Bill" }}</c-heading>
+        <c-heading class="head" align="center" mb="5%" color="#11225F"> {{ "เลือกเมนูที่จะยกเลิก" }}</c-heading>
     </c-stack>
 
         <c-box>
@@ -18,40 +17,48 @@
         <div v-for="item in orders.data" :key="item.id" mt="10%">
             
             <div v-for="menu in item.menus" :key="menu.id">
-                <c-grid w="381px" template-columns="repeat(4, 1fr)" gap="1">
-                    <c-box ml="10%" w="100%" h="10" >
-                        <c-text> {{  menu.name_TH }} </c-text>
-                            
-                    </c-box>
+                <div v-if="menu.pivot.food_status === 'prepare' || menu.pivot.food_status === 'cancel'">
 
-                    <c-box ml="78%" w="100%" h="10"  >
-                        <c-text > x {{ menu.pivot.QTY }} </c-text>
-                    </c-box>
+                    <c-grid w="381px" template-columns="repeat(4, 1fr)" gap="1">
+                        <c-box ml="10%" w="100%" h="10" >
+                            <c-text> {{  menu.name_TH }} </c-text>
+                                
+                        </c-box>
 
-                    <c-box ml="45%" w="100%" h="10"  >
-                        <c-text> {{ menu.pivot.price }}</c-text>
-                    </c-box>
+                        <c-box ml="78%" w="100%" h="10"  >
+                            <c-text > x {{ menu.pivot.QTY }} </c-text>
+                        </c-box>
 
-                    <c-box ml="13%" w="100%" h="10"  >
-                        <c-badge v-if="menu.pivot.food_status === 'prepare' " rounded="full" px="2" variant-color="green" ml="3">
-                            Prepare
-                        </c-badge>
-                        <c-badge v-if="menu.pivot.food_status === 'cooking' " rounded="full" px="2" variant-color="yellow" ml="3">
-                            Cooking
-                        </c-badge>
-                        <c-badge v-if="menu.pivot.food_status === 'served' " rounded="full" px="2" variant-color="red" ml="5">
-                            served
-                        </c-badge>
-                    </c-box>
-                    
-                </c-grid>
-                <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" mt="6%"/> 
+                        <c-box ml="45%" w="100%" h="10"  >
+                            <c-text> {{ menu.pivot.price }}</c-text>
+                        </c-box>
+
+                        <c-box ml="13%" w="100%" h="10"  >
+                            <c-badge v-if="menu.pivot.food_status === 'prepare' " rounded="full" px="2" variant-color="green" ml="3">
+                                Prepare
+                            </c-badge>
+                            <c-badge v-if="menu.pivot.food_status === 'cooking' " rounded="full" px="2" variant-color="yellow" ml="3">
+                                Cooking
+                            </c-badge>
+                            <c-badge v-if="menu.pivot.food_status === 'served' " rounded="full" px="2" variant-color="red" ml="5">
+                                served
+                            </c-badge>
+                            <c-badge v-if="menu.pivot.food_status === 'cancel' " rounded="full" px="2" variant-color="red" ml="5">
+                                cancel
+                            </c-badge>
+                        </c-box>    
+                        {{ item.id }}
+                        {{ menu.id }}
+
+                        <c-button @click="cancel(item.id,menu.id)" mt="2rem" width="full" variant-color="green" variant="solid" size="lg">
+                            ยกเลิก
+                        </c-button> 
+                        
+                    </c-grid>
+                    <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" mt="6%"/> 
+                </div>
             </div>
         </div>
-        <c-text align="center" mt="15%" fontWeight="bold" color="#C72319">
-            Total Price : {{ total_price }} THB
-        </c-text>
-        <c-button @click="checkbill" variant-color="yellow" >check bill</c-button>
 
     </div>
     
@@ -105,32 +112,55 @@ export default {
             payload_order_status:{
                 order_id: 0,
                 order_status:0
-            }
+            },
+            payload:{
+                menu_id:0,
+                food_status:4,
+                order_id:0
+              },
         }
     },
     async created(){
         console.log("Check Bill Page Created");
         this.form.table_number = JSON.parse(localStorage.getItem("table_number"));
         this.form.table_number = parseInt(this.form.table_number)
-        console.log("form = ",this.form)
-        await OrderApi.dispatch("fetchUnpaidOrder",this.form)
-        this.orders = OrderApi.getters.getUnpaidOrders
+        // console.log("form = ",this.form)
+        await OrderApi.dispatch("fetchUnpaidCanCancelOrder",this.form)
+        this.orders = OrderApi.getters.getUnpaidCanCancelOrders
         console.log("orders = ",this.orders.data)
 
         for(let i = 0 ; i < this.orders.data.length ; i++)
         {
             this.total_price += this.orders.data[i].total_price
-            console.log("total_price = " , this.total_price)
+            // console.log("total_price = " , this.total_price)
 
             if(this.orders.data[i].order_status != 'all_served_unpaid')
             {
                 this.can_check_bill = false
-                console.log("order_status = " , this.orders.data[i].order_status)
+                // console.log("order_status = " , this.orders.data[i].order_status)
             }
         }
 
     },
     methods:{
+        async cancel(order_id,menu_id){
+            // console.log("payload = ",order_id)
+
+            this.payload.menu_id = menu_id
+            this.payload.order_id = order_id
+
+            console.log("payload = ",this.payload)
+
+            await OrderApi.dispatch("updateFoodStatus",this.payload)
+            await OrderApi.dispatch("fetchUnpaidCanCancelOrder",this.form)
+        this.orders = OrderApi.getters.getUnpaidCanCancelOrders
+
+
+            // this.payload.menu_id = 0
+            // this.payload.order_id = 0
+
+
+        },
         async checkbill(){
             if(this.can_check_bill)
             {

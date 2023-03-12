@@ -4,6 +4,8 @@ import HomeView from '../views/HomeView.vue'
 import SelectTablePage from '../components/select-table-page/SelectTablePage.vue'
 import AllMenuPage from '../components/all-menu-page/AllMenuPage.vue'
 import CheckBillPage from '../components/check-bill-page/CheckBillPage.vue'
+import CancelOrderPage from '../components/cancel-bill/CancelOrderPage.vue'
+
 
 
 
@@ -37,6 +39,11 @@ const routes = [
     path: '/checkBillPage',
     name: 'checkBillPage',
     component: CheckBillPage
+  },
+  {
+    path: '/cancelOrderPage',
+    name: 'cancelOrderPage',
+    component: CancelOrderPage
   },
 ]
 
