@@ -1,6 +1,17 @@
 <template>
   <div>
-    <vs-button @click="popupActivo2=true" color="green" type="filled">เลือก</vs-button>
+    <div v-if="status === 'in stock'">
+        <vs-button @click="popupActivo2=true" color="green" type="filled">เลือก</vs-button>
+
+    </div>
+    <div v-if="status === 'out of stock'">
+        <vs-button color="red" type="filled" isDisabled>เลือก</vs-button>
+
+
+    </div>
+    <!-- <vs-button @click="popupActivo2=true" color="green" type="filled">เลือก</vs-button>
+    <vs-button color="red" type="filled" isDisabled>เลือก</vs-button> -->
+
 
 
         <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
@@ -74,6 +85,7 @@ export default {
         id: Number,
         price: Number,
         form: Array,
+        status: String,
     },
     components: {
         CInput,
@@ -103,12 +115,14 @@ export default {
                 "order_time":"1985-08-05 13:25:30",
                 "menus":[]
             },
-            disabled: true
+            disabled: true,
+            disabledout: false,
+
         }
     },
     async created(){
         console.log("Select Menu Pop Up Created");
-        console.log("form = ", this.form)
+        console.log("status = ", this.status)
 
     },
     methods:{

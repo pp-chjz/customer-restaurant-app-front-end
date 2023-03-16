@@ -105,6 +105,7 @@
                 v-bind:id="item.id"
                 v-bind:price="item.price"
                 v-bind:form="form.menus"
+                v-bind:status="item.menu_status"
                 @saveInfo="addMenu"></select-menu-popup>
                 </c-grid>
             </c-flex>

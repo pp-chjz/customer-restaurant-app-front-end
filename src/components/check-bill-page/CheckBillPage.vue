@@ -18,34 +18,36 @@
         <div v-for="item in orders.data" :key="item.id" mt="10%">
             
             <div v-for="menu in item.menus" :key="menu.id">
-                <c-grid w="381px" template-columns="repeat(4, 1fr)" gap="1">
-                    <c-box ml="10%" w="100%" h="10" >
-                        <c-text> {{  menu.name_TH }} </c-text>
-                            
-                    </c-box>
+                <div v-if="menu.pivot.food_status !== 'cancel' ">
+                    <c-grid w="381px" template-columns="repeat(4, 1fr)" gap="1">
+                        <c-box ml="10%" w="100%" h="10" >
+                            <c-text> {{  menu.name_TH }} </c-text>
+                                
+                        </c-box>
 
-                    <c-box ml="78%" w="100%" h="10"  >
-                        <c-text > x {{ menu.pivot.QTY }} </c-text>
-                    </c-box>
+                        <c-box ml="78%" w="100%" h="10"  >
+                            <c-text > x {{ menu.pivot.QTY }} </c-text>
+                        </c-box>
 
-                    <c-box ml="45%" w="100%" h="10"  >
-                        <c-text> {{ menu.pivot.price }}</c-text>
-                    </c-box>
+                        <c-box ml="45%" w="100%" h="10"  >
+                            <c-text> {{ menu.pivot.price }}</c-text>
+                        </c-box>
 
-                    <c-box ml="13%" w="100%" h="10"  >
-                        <c-badge v-if="menu.pivot.food_status === 'prepare' " rounded="full" px="2" variant-color="green" ml="3">
-                            Prepare
-                        </c-badge>
-                        <c-badge v-if="menu.pivot.food_status === 'cooking' " rounded="full" px="2" variant-color="yellow" ml="3">
-                            Cooking
-                        </c-badge>
-                        <c-badge v-if="menu.pivot.food_status === 'served' " rounded="full" px="2" variant-color="red" ml="5">
-                            served
-                        </c-badge>
-                    </c-box>
-                    
-                </c-grid>
-                <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" mt="6%"/> 
+                        <c-box ml="13%" w="100%" h="10"  >
+                            <c-badge v-if="menu.pivot.food_status === 'prepare' " rounded="full" px="2" variant-color="green" ml="3">
+                                Prepare
+                            </c-badge>
+                            <c-badge v-if="menu.pivot.food_status === 'cooking' " rounded="full" px="2" variant-color="yellow" ml="3">
+                                Cooking
+                            </c-badge>
+                            <c-badge v-if="menu.pivot.food_status === 'served' " rounded="full" px="2" variant-color="red" ml="5">
+                                served
+                            </c-badge>
+                        </c-box>
+                        
+                    </c-grid>
+                    <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" mt="6%"/> 
+                </div>
             </div>
         </div>
         <c-text align="center" mt="15%" fontWeight="bold" color="#C72319">
@@ -119,13 +121,19 @@ export default {
 
         for(let i = 0 ; i < this.orders.data.length ; i++)
         {
-            this.total_price += this.orders.data[i].total_price
-            console.log("total_price = " , this.total_price)
+
+            for(let j = 0 ; j < this.orders.data[i].menus.length ; j++)
+            {
+                // console.log("food_status = ",this.orders.data[i].menus[j].pivot.food_status)
+                if(this.orders.data[i].menus[j].pivot.food_status != "cancel")
+                    this.total_price += this.orders.data[i].total_price
+            }
+            
 
             if(this.orders.data[i].order_status != 'all_served_unpaid')
             {
                 this.can_check_bill = false
-                console.log("order_status = " , this.orders.data[i].order_status)
+                // console.log("order_status = " , this.orders.data[i].order_status)
             }
         }
 
