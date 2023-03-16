@@ -21,6 +21,7 @@
     <c-form-control>
         <c-stack should-wrap-children is-inline ml="3%" mt="2%">
             <c-input 
+                v-model="payload_search.menu_name"
                 mr="33%"
                 mt="7%"
                 width="360px"
@@ -36,32 +37,19 @@
     <!-- Categories -->
     <c-text fontSize="2xl" mt="8%" ml="3%"> Categories </c-text>
     <c-stack should-wrap-children is-inline ml="3%" mt="3%">
-        <c-button 
-            width="100px"
-            height="33px"
-            borderWidth="0.1rem"
-            borderRadius="42rem"
-            bg="#F58BF8"
-        > Popular </c-button>
-
-        <c-button 
-            width="100px"
-            height="33px"
-            borderWidth="0.1rem"
-            borderRadius="42rem"
-            color="#A7A7A7"
-            bg="#2F383A"
-        > All Foods </c-button>
-
-        <c-button 
-            width="100px"
-            height="33px"
-            borderWidth="0.1rem"
-            borderRadius="42rem"
-            color="#A7A7A7"
-            bg="#2F383A"
-        > Seafood </c-button>
+        <c-select v-model="menu_catagory" placeholder="Select catagory" w="45%">
+            <option value="0">All</option>
+            <option value="1">Food</option>
+            <option value="2" bg="yellow">Drink</option>
+            <option value="3" bg="yellow">Dessert</option>
+        </c-select>
     </c-stack>
+    <c-button @click="search()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+        ค้นหา
+    </c-button> 
+    <c-button @click="clear()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+        clear
+    </c-button> 
 
     <c-button class="getOrder" @click="order()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
         สั่งอาหาร
@@ -182,6 +170,11 @@ export default {
             },
             disabled: true,
             table_number:0,
+            menu_catagory:"",
+            payload_search:{
+                menu_name:"",
+                menu_catagory:0,
+            }
         }
     },
     async created(){
@@ -195,6 +188,50 @@ export default {
 
     },
     methods:{
+        async search(){
+            console.log("search")
+                if(this.payload_search.menu_name == "" && this.menu_catagory == ""  )
+                {
+                    this.$swal({
+                        icon: 'error',
+                        title: 'ไม่สามารถค้นหาได้',
+                        text: 'กรุณาเลือกรายการที่จะค้นหา',
+                        footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
+                else
+                {
+                    this.payload_search.menu_name = "%" + this.payload_search.menu_name + "%" 
+                    if(this.menu_catagory != "")
+                        this.payload_search.menu_catagory = parseInt(this.menu_catagory);
+                    console.log("payloadSearch df = " ,this.payload_search)
+                    await MenuApi.dispatch("fetchSearchMenu", this.payload_search)
+                    this.menus = MenuApi.getters.getSearchMenus
+                    this.menus = this.menus.data
+                    this.menu=[{menu_id:'not show'}],
+
+                    console.log("this.menuuuuuuuuuuuuuu = " ,this.menu)
+
+                    for(let i = 0; i<this.menus.data.length ; i++){
+                        this.menu.push(this.menus.data[i])
+                    }
+                    this.menu[0].menu_id = 'true';
+                    this.payload_search.menu_catagory = 0
+                    this.payload_search.menu_name = ""
+                    this.menu_catagory = "",
+
+                    this.$forceUpdate()
+                }
+        },
+        async clear(){
+            this.menu=[{menu_id:'not show'}],
+            this.payload_search.menu_catagory = 0
+                    this.payload_search.menu_name = ""
+                    this.menu_catagory = "",
+            await this.fetchMenu()
+
+
+        },
         getNow() {
             const today = new Date();
             const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
