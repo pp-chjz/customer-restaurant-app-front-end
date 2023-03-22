@@ -12,19 +12,17 @@
     <!-- <vs-button @click="popupActivo2=true" color="green" type="filled">เลือก</vs-button>
     <vs-button color="red" type="filled" isDisabled>เลือก</vs-button> -->
 
-
-
         <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
         <vs-popup class="pop-up"  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
             <c-image src="gibberish.png" size="300px" rounded="lg" fallback-src="https://via.placeholder.com/150" />
-            <p class="name">{{ name_TH }} ({{ name_ENG }})</p>
+            <c-text class="name">{{ name_TH }} ({{ name_ENG }})</c-text>
             <br>
-            <p class="name">หมายเหตุถึงร้านอาหาร (ไม่จำเป็นต้องระบุ)</p>
+            <c-text fontSize="md" >หมายเหตุถึงร้านอาหาร (ไม่จำเป็นต้องระบุ)</c-text>
 
-            <vs-input class="inputx" size="large" placeholder="ระบุรายละเอียดคำขอ" v-model="comment"/>
+            <vs-input mt="2%" class="inputx" size="large" placeholder="ระบุรายละเอียดคำขอ" v-model="comment"/>
 
             <!-- เพิ่มลดจำนวนจาน -->
-            <c-flex align="center">
+            <c-flex align="center" mt="4%">
                 <c-flex bg="green.50" align="flex-end">
                     <c-button @click="deCount" variant-color="red" :isDisabled="disabled">-</c-button>
                 </c-flex>

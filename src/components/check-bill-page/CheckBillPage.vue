@@ -53,7 +53,7 @@
         <c-text align="center" mt="15%" fontWeight="bold" color="#C72319">
             Total Price : {{ total_price }} THB
         </c-text>
-        <c-button @click="checkbill" variant-color="yellow" >check bill</c-button>
+        <c-button @click="checkbill" variant-color="yellow" ml="35%" mt="10%">check bill</c-button>
 
     </div>
     
@@ -164,7 +164,7 @@ export default {
                 this.$swal({
                     icon: 'error',
                     title: 'ไม่สามารถเช็คบิลได้',
-                    text: 'รายการอาหารที่่สั่งยังได้ไม่ครบ',
+                    text: 'รายการอาหารที่สั่งยังได้ไม่ครบ',
                     footer: '<a href="">Why do I have this issue?</a>'
                 })
             }
