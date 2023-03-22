@@ -1,7 +1,7 @@
 <template>
     <div>
         <c-stack is-inline mt="20%">
-        <c-heading class="head" align="center" mb="5%" color="#11225F"> {{ "เลือกเมนูที่จะยกเลิก" }}</c-heading>
+        <c-heading color="#11225F" ml="25%"> {{ "Cancel Menu" }}</c-heading>
     </c-stack>
 
         <c-box>
@@ -29,7 +29,7 @@
                             <c-text > x {{ menu.pivot.QTY }} </c-text>
                         </c-box>
 
-                        <c-box ml="45%" w="100%" h="10"  >
+                        <c-box ml="59%" w="100%" h="10"  >
                             <c-text> {{ menu.pivot.price }}</c-text>
                         </c-box>
 
@@ -46,14 +46,49 @@
                             <c-badge v-if="menu.pivot.food_status === 'cancel' " rounded="full" px="2" variant-color="red" ml="5">
                                 cancel
                             </c-badge>
-                        </c-box>    
-                        {{ item.id }}
-                        {{ menu.id }}
+                        </c-box>                        
 
-                        <c-button @click="cancel(item.id,menu.id)" mt="2rem" width="full" variant-color="green" variant="solid" size="lg">
+                        <div v-if="menu.pivot.food_status === 'cancel'" >
+                            <c-button :isDisabled="disabled" @click="cancel(item.id, menu.id, menu.name_TH)" ml="8%" frontWeight="bold" width="50px" variant-color="red"  border="1px" border-color="red.500" size="xs">
                             ยกเลิก
-                        </c-button> 
-                        
+                            </c-button> 
+                        </div>
+
+                        <div v-if="menu.pivot.food_status === 'prepare'" >
+                            <c-button @click="openPopUp()" ml="8%" frontWeight="bold" width="50px" variant-color="red"  border="1px" border-color="red.500" size="xs">
+                            ยกเลิก
+                            </c-button> 
+                        </div>
+
+                        <vs-popup  title="ยืนยันรายการอาหารที่ต้องการยกเลิก" :active.sync="popupActivo3">
+                            <p class="name">{{ menu.name_TH }} ({{ menu.name_ENG }})</p>
+                            <br>
+                            <c-flex align="center" mt="4%">
+                                <!-- <c-flex bg="green.50" align="flex-end">
+                                    <c-button @click="deCountCancel" variant-color="red" :isDisabled="disabled">-</c-button>
+                                </c-flex> -->
+                                <c-flex bg="blue.50" size="40px" align="center" justify="center">
+                                    <c-text text-align="center">
+                                    {{ menu.pivot.QTY }}
+                                    </c-text>
+                                </c-flex>
+                                <!-- <c-box>
+                                    <c-button  @click="addCountCancel" variant-color="green">+</c-button>
+                                </c-box> -->
+                            </c-flex>
+
+
+                            <!-- เพิ่มลดจำนวนจาน -->
+                            <c-flex align="center">
+                                <c-button @click="closePopUp()" mt="2rem" width="full" variant-color="red" variant="solid" size="lg">
+                                ยกเลิก
+                            </c-button> 
+                            <c-button @click="cancel(item.id, menu.id, menu.name_TH)" mt="2rem" width="full" variant-color="green" variant="solid" size="lg">
+                                ยืนยัน
+                            </c-button> 
+                            </c-flex>
+                            <!-- เพิ่มลดจำนวนจาน -->
+                        </vs-popup>
                     </c-grid>
                     <c-divider class="border" borderWidth="0.1rem" borderRadius="42rem" border-color="black" mt="6%"/> 
                 </div>
@@ -77,7 +112,7 @@ import { CInput,CSelect,CNumberInput,
   CButton, CImage, CSimpleGrid, CBox,
   CBadge, CFlex, CText, CHeading, CIcon,  CGrid, CGridItem,
   CTextarea, CIconButton ,CFormControl, span,
-  CDivider, CPseudoBox
+  CDivider, CPseudoBox, 
   } from "@chakra-ui/vue";
 
 export default {
@@ -117,7 +152,10 @@ export default {
                 menu_id:0,
                 food_status:4,
                 order_id:0
-              },
+            },
+            disabled: true,
+            popupActivo3: false,
+            count: 1
         }
     },
     async created(){
@@ -143,24 +181,48 @@ export default {
 
     },
     methods:{
-        async cancel(order_id,menu_id){
-            // console.log("payload = ",order_id)
+        openPopUp(){
+            this.popupActivo3 = true
+        },
+        closePopUp(){
+            this.popupActivo3 = false
+        },
+        async cancel(order_id, menu_id, menu_name_TH){
 
             this.payload.menu_id = menu_id
             this.payload.order_id = order_id
-
-            console.log("payload = ",this.payload)
-
+            
             await OrderApi.dispatch("updateFoodStatus",this.payload)
             await OrderApi.dispatch("fetchUnpaidCanCancelOrder",this.form)
-        this.orders = OrderApi.getters.getUnpaidCanCancelOrders
+            this.orders = OrderApi.getters.getUnpaidCanCancelOrders
+            console.log("payload = ",this.payload)
 
-
-            // this.payload.menu_id = 0
-            // this.payload.order_id = 0
-
+            this.$swal("", `ยกเลิก${menu_name_TH}สำเร็จ`, "success");
+            this.popupActivo3 = false
 
         },
+        confirm(){
+            this.popupActivo3 = true
+        },
+        cancelMenu(){
+            this.popupActivo3 = false
+        },
+        saveInfo() {
+            this.$emit('saveInfo',returnData)   
+            this.popupActivo3 = false
+        },
+        // addCountCancel(){
+        //     this.count++
+        //     if (this.count == menu.pivot.QTY) {
+        //         this.disabled = false
+        //     }
+        // },
+        // deCountCancel(){
+        //     this.count++
+        //     if (this.count == 0) {
+        //         this.disabled = true
+        //     }
+        // },
         async checkbill(){
             if(this.can_check_bill)
             {
