@@ -14,13 +14,23 @@
       >
       
         <c-modal-content >
-          <img class="checkbill" src="@/assets/money.png" style="width:25%;" />
-            <c-link as="router-link" to="/checkBillPage" align="center" mt="10%" font-weight="bold"> 
-              Check Bill
-            </c-link>
-            <c-link as="router-link" to="/cancelOrderPage" align="center" mt="10%" font-weight="bold"> 
-              Cancel Order
-            </c-link>
+          <c-flex>
+            <img class="checkbill" src="@/assets/money.png" style="width:25%;" />
+            <img class="cancelMenu" src="@/assets/cancel.png" style="width:25%;" />
+          </c-flex>
+          <c-stack  is-inline ml="17%" mt="3%">
+            <c-flex>
+              <c-link as="router-link" to="/checkBillPage" mt="10%" font-weight="bold"> 
+                Check Bill
+              </c-link>
+            </c-flex>
+            
+            <c-flex ml="15%">
+              <c-link as="router-link" to="/cancelOrderPage" mt="10%" font-weight="bold"> 
+                Cancel Order
+              </c-link>
+            </c-flex>
+          </c-stack>
             <c-modal-close-button />
             <c-modal-footer>
             </c-modal-footer>
@@ -28,6 +38,7 @@
           <c-modal-overlay />
         </c-modal>
       </div>
+      <!-- <a class="button" href="#/menuHistory">History</a> -->
     
 </div>
 </template>
@@ -36,7 +47,7 @@
 import AuthUser from "../store/AuthUser";
 import { CText, CFlex, CMenu, CMenuButton, CSimpleGrid, CBox, CImage,
          CModal, CModalContent, CModalOverlay, CModalCloseButton, 
-         CModalBody, CLink, CModalFooter, CButton } from '@chakra-ui/vue';
+         CModalBody, CLink, CModalFooter, CButton, CStack } from '@chakra-ui/vue';
          
 
 export default {
@@ -46,7 +57,7 @@ export default {
     CSimpleGrid, CFlex, CBox,
     CImage, CModal, CModalContent, CModalOverlay, 
     CModalCloseButton, CModalBody,
-    CLink, CModalFooter, CButton
+    CLink, CModalFooter, CButton, CStack
   },
   data () {
     return {
@@ -118,7 +129,12 @@ export default {
 }
 
 .checkbill {
-  margin-left: 37%;
+  margin-left: 14%;
+  margin-top: 14%;
+}
+
+.cancelMenu {
+  margin-left: 20%;
   margin-top: 14%;
 }
 

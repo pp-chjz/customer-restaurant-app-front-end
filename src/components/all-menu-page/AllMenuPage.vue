@@ -19,19 +19,44 @@
         </c-box>
     </c-stack>
     <c-form-control>
-        <c-stack should-wrap-children is-inline ml="3%" mt="2%">
+        <c-stack ml="2%" is-inline  mt="2%">
             <c-input 
                 v-model="payload_search.menu_name"
                 mr="33%"
                 mt="7%"
-                width="360px"
+                width="250px"
                 height="45px"
                 borderWidth="0.1rem"
                 borderRadius="42rem"
                 bg="#2F383A"
                 color="#A7A7A7" 
                 placeholder="Search Foods"  />
+
+                <c-flex ml="%">
+                <c-button @click="search()"
+                    mr="4%"
+                    mt="20%"
+                    width="70px"
+                    height="45px"
+                    borderWidth="0.1rem"
+                    borderRadius="42rem" 
+                    variant="solid" 
+                    color="#2D3748"
+                > Search </c-button>
+
+                <c-button @click="clear()" 
+                    mr="5%"
+                    width="70px"
+                    mt="20%"
+                    height="45px"
+                    borderWidth="0.1rem"
+                    borderRadius="42rem" 
+                    variant="solid"  variant-color="red"  size="md"> Clear
+                </c-button> 
+            </c-flex>
+
         </c-stack>
+        
     </c-form-control>
 
     <!-- Categories -->
@@ -43,17 +68,11 @@
             <option value="2" bg="yellow">Drink</option>
             <option value="3" bg="yellow">Dessert</option>
         </c-select>
-    </c-stack>
-    <c-button @click="search()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
-        ค้นหา
-    </c-button> 
-    <c-button @click="clear()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
-        clear
-    </c-button> 
 
-    <c-button class="getOrder" @click="order()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
-        สั่งอาหาร
-    </c-button> 
+        <c-button class="getOrder" @click="order()" mt="2rem" width="full" variant-color="yellow" variant="solid" size="lg">
+            สั่งอาหาร
+        </c-button> 
+    </c-stack>
 
     <!-- Show All Menus -->
     <div v-for="item in menus.data" :key="item.id">
@@ -88,13 +107,14 @@
                     {{ item.price }} THB
                 </c-text>
                 <select-menu-popup
-                v-bind:name_TH="item.name_TH"
-                v-bind:name_ENG="item.name_ENG"
-                v-bind:id="item.id"
-                v-bind:price="item.price"
-                v-bind:form="form.menus"
-                v-bind:status="item.menu_status"
-                @saveInfo="addMenu"></select-menu-popup>
+                    v-bind:name_TH="item.name_TH"
+                    v-bind:name_ENG="item.name_ENG"
+                    v-bind:id="item.id"
+                    v-bind:price="item.price"
+                    v-bind:form="form.menus"
+                    v-bind:status="item.menu_status"
+                    @saveInfo="addMenu">
+                </select-menu-popup>
                 </c-grid>
             </c-flex>
 
@@ -174,7 +194,7 @@ export default {
             payload_search:{
                 menu_name:"",
                 menu_catagory:0,
-            }
+            },
         }
     },
     async created(){
