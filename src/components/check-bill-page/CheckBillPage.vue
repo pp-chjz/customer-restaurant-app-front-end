@@ -126,7 +126,10 @@ export default {
             {
                 // console.log("food_status = ",this.orders.data[i].menus[j].pivot.food_status)
                 if(this.orders.data[i].menus[j].pivot.food_status != "cancel")
-                    this.total_price += this.orders.data[i].total_price
+                    // console.log("this.total_price" , this.total_price)
+                    // console.log("this.orders.data[i].total_price" , this.orders.data[i].menus[j].pivot.price)
+
+                    this.total_price += this.orders.data[i].menus[j].pivot.price
             }
             
 
