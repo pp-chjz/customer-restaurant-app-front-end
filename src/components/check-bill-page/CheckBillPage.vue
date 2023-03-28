@@ -53,7 +53,34 @@
         <c-text align="center" mt="15%" fontWeight="bold" color="#C72319">
             Total Price : {{ total_price }} THB
         </c-text>
-        <c-button @click="checkbill" variant-color="yellow" ml="35%" mt="10%">check bill</c-button>
+        <c-button @click="popupActivo2=true" variant-color="yellow" ml="35%" mt="10%">check bill</c-button>
+
+
+    <!-- <vs-button @click="popupActivo2=true" color="green" type="filled">เลือก</vs-button>
+    <vs-button color="red" type="filled" isDisabled>เลือก</vs-button> -->
+
+        <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
+        <vs-popup class="pop-up"  title="เมนูที่ต้องการเลือก" :active.sync="popupActivo2">
+            <c-text class="name">กรุณาชำระเงินที่เคาเตอร์</c-text>
+            <br>
+            <c-text class="name">หรือ ชำระผ่านธนาคาร</c-text>
+
+            <img class="image" src="@/assets/qr.png"/>
+
+
+                <!-- เพิ่มลดจำนวนจาน -->
+                <c-flex align="center">
+                    <c-button @click="popupActivo2=false" mt="2rem" width="full" variant-color="red" variant="solid" size="lg">
+                        ยกเลิก
+                    </c-button> 
+                    <c-button @click="checkbill" width="full" variant-color="green" ml="35%" mt="10%">ยืนยัน</c-button>
+
+                </c-flex>
+                <!-- เพิ่มลดจำนวนจาน -->
+
+                
+        </vs-popup>
+        <!-- ส่วนของ pop up ที่เด้งขึ้นมาเมื่อกดปุ่ม -->
 
     </div>
     
@@ -107,7 +134,8 @@ export default {
             payload_order_status:{
                 order_id: 0,
                 order_status:0
-            }
+            },
+            popupActivo2:false,
         }
     },
     async created(){
@@ -159,6 +187,7 @@ export default {
                     this.payload_order_status.order_status = 3
                     await OrderApi.dispatch("updateOrderStatus",this.payload_order_status)
                 }
+                popupActivo2=false
                 
                 
             }

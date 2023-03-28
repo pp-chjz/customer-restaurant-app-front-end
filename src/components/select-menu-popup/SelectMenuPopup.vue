@@ -84,6 +84,7 @@ export default {
         price: Number,
         form: Array,
         status: String,
+        catagory: String,
     },
     components: {
         CInput,
@@ -121,6 +122,8 @@ export default {
     async created(){
         console.log("Select Menu Pop Up Created");
         console.log("status = ", this.status)
+        console.log("catagories = ", this.catagory)
+
 
     },
     methods:{
@@ -141,10 +144,14 @@ export default {
         saveInfo() {
             // this.total_price = this.price * this.count
             this.getNow()
+
             let returnData = {
                 menu_id: this.id,
                 comment: this.comment,
                 status: 1,
+                catagories:this.catagory,
+                name_ENG:this.name_ENG,
+                name_TH:this.name_TH,
                 food_status: 1,
                 order_time: this.timestamp,
                 QTY: this.count,
@@ -153,6 +160,7 @@ export default {
             }
             this.name_TH = ""
             this.name_ENG = ""
+            this.catagory = ""
             this.id = 0
             this.price = 0
             this.comment = ""

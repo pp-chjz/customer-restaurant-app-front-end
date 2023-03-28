@@ -113,6 +113,7 @@
                     v-bind:price="item.price"
                     v-bind:form="form.menus"
                     v-bind:status="item.menu_status"
+                    v-bind:catagory="item.catagories"
                     @saveInfo="addMenu">
                 </select-menu-popup>
                 </c-grid>
@@ -182,6 +183,9 @@ export default {
                 "menu_id":0,
                 "comment":"",
                 "status":0,
+                "catagories":"",
+                "name_ENG":"",
+                "name_TH":"",
                 "QTY":0,
                 "food_status":0,
                 "price":0,
